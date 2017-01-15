@@ -36,6 +36,14 @@ castnow <url-to-torrent-file OR magnet> --subtitles </local/path/to/subtitles.sr
 // transcode some other video format to mp4 while playback (requires ffmpeg)
 castnow ./myvideo.avi --tomp4
 
+// transcode only audio while playback (in case the video shows, but there's no audio)
+castnow ./myvideo.mkv --tomp4 --ffmpeg-vcodec copy
+
+// change the increment at which the volume steps up or down. A lower number
+// is helpful if your speakers are very loud, and you want more precision over
+// the change in volume
+castnow ./song.mp3 --volume-step "0.01"
+
 // re-attach to a currently running playback session
 castnow
 
@@ -77,6 +85,16 @@ contains subtitles.
 
 * `--loop` Play the list of files over and over in a loop, forever.
 
+* `--shuffle` Play the list of files in random order.
+
+* `--recursive` List all files in directories recursively.
+
+* `--volume-step` Step at which the volume changes. Helpful for speakers that are softer or louder than normal. Value ranges from 0 to 1. Default is 0.05.
+
+* `--command <key1>,<key2>,...` Execute key command(s) (where each `<key>` is one of the keys listed under *player controls*, below).
+
+* `--exit` Exit when playback begins or `--command <key>` completes.
+
 * `--help` Display help message.
 
 ### player controls
@@ -85,6 +103,7 @@ contains subtitles.
 
 space   // toggle between play and pause
 m       // toggle mute
+t       // toggle subtitles
 up      // volume up
 down    // volume down
 left    // seek backward (keep pressed / multiple press for faster seek)
@@ -103,6 +122,18 @@ However, there is a nice workaround in combination with the tool [youtube-dl](ht
 `youtube-dl -o - https://youtu.be/BaW_jenozKc | castnow --quiet -`
 
 Thanks to [trulex](https://github.com/trulex) for pointing that out.
+
+### non-interactive use
+
+castnow can also be used in cron jobs or via window-manager bindings; for example:
+
+```
+# Play/pause.
+castnow --command space --exit
+
+# Louder.
+castnow --command up --exit
+```
 
 ### reporting bugs/issues
 
